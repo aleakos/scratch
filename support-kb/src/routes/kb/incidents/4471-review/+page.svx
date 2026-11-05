@@ -1,0 +1,52 @@
+---
+layout: runbook
+title: '#4471 · date report review'
+owner: support desk
+status: proposed
+reviewed: 2026-11-05
+signature: Pi
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  let { signature } = $props();
+</script>
+
+# Review of the merged reports
+
+The original incident page says one parser issue explains all reports. The desk's cause view
+also identifies a different problem: the booking-v3 date hint tells day-first tenants to enter
+month first, while that form reads the date in the tenant's order.
+
+The table below groups unique reports by the desk's current tenant and channel rules. Intake
+labels are guesses, not a cause. The rule does not inspect report text, so its groups are a
+starting point for investigation, not proof that every report has the assigned cause.
+
+<CauseTable ticket={4471} />
+
+The table describes the exported desk queue, not the new GitHub issues. We filed
+[the parser issue](https://github.com/aleakos/scratch/issues/1) and
+[the booking-v3 hint issue](https://github.com/aleakos/scratch/issues/2) separately.
+
+## One-day shifts need review
+
+Five reports in the desk notes describe a one-day move or otherwise suggest it. They remain
+in their rule-assigned group in the table. Check their booking times, time zones, and invite
+conversion before assigning a cause; the reports alone do not prove a shared time-zone bug.
+
+## Why the merge needs review
+
+The accepted deduplication decision matches subjects rather than report content. Similar
+subjects can therefore hide different problems. Review the cause and evidence before merging;
+do not treat the subject as proof of a duplicate.
+
+## Queue history
+
+The desk continued merging reports after they arrived. The timeline compares receipt and
+merge dates; it is built from the export when this page renders.
+
+<QueueTimeline ticket={4471} />
+
+<RenderStamp {signature} />
